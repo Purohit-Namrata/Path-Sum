@@ -9,22 +9,28 @@ class TreeNode:
 
 class Solution:
     def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
-        def dfs(node,newTargetSum):
+        def dfs(node, currentSum):
             # Base case: if the tree is empty
             if not node:
                 return False
-            newTargetSum = newTargetSum + node.val 
+            
+            currentSum += node.val  # Update the current sum
+            
             # If we reach a leaf node
             if not node.left and not node.right:
-                return newTargetSum == targetSum
-        
-        # Recur for left and right subtrees with the updated targetSum
+                return currentSum == targetSum  # Compare to the original targetSum
             
-            return (self.dfs(node.left, newTargetSum) or
-                self.dfs(node.right, newTargetSum))
-        return dfs(root,0)
-    
-t=TreeNode()
-s=Solution()
-ans=s.hasPathSum([1,2,3], 5)
-print(ans)
+            # Recur for left and right subtrees with the updated current sum
+            return dfs(node.left, currentSum) or dfs(node.right, currentSum)
+        
+        return dfs(root, 0)
+
+# Example Usage
+# Constructing a binary tree
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+
+s = Solution()
+ans = s.hasPathSum(root, 5)
+print(ans)  # Output: True
